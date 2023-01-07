@@ -19,7 +19,7 @@ public class InMemoryUserDAO implements UserDAO {
     }
 
     @Override
-    public void addUserByChatId(User user) {
+    public void putUserByChatId(User user) {
         userByChatId.put(user.getChatId(), user);
     }
 

@@ -1,4 +1,4 @@
-package com.studyexchange.telegramutils;
+package com.studyexchange.telegramapiutils;
 
 import com.pengrad.telegrambot.model.PhotoSize;
 

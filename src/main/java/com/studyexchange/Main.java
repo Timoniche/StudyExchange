@@ -3,6 +3,9 @@ package com.studyexchange;
 import com.pengrad.telegrambot.TelegramBot;
 import com.studyexchange.dao.InMemoryUserDAO;
 import com.studyexchange.service.UserService;
+import com.studyexchange.telegrambot.GatewayUpdateListener;
+import com.studyexchange.telegrambot.UpdateReplier;
+import com.studyexchange.telegrambot.stateactions.StateActionFactory;
 
 public class Main {
 
@@ -13,10 +16,15 @@ public class Main {
         String token = args[0];
         TelegramBot bot = new TelegramBot(token);
         UserService userService = new UserService(new InMemoryUserDAO());
-        GatewayUpdateListener gatewayUpdateListener = new GatewayUpdateListener(
+        StateActionFactory stateActionFactory = new StateActionFactory(
                 bot,
                 userService
         );
+        UpdateReplier updateReplier = new UpdateReplier(
+                userService,
+                stateActionFactory
+        );
+        GatewayUpdateListener gatewayUpdateListener = new GatewayUpdateListener(updateReplier);
         bot.setUpdatesListener(gatewayUpdateListener);
     }
 }
