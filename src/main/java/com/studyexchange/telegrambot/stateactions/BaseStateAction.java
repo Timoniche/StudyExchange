@@ -7,6 +7,8 @@ public abstract class BaseStateAction implements StateAction {
     protected final TelegramBot bot;
     protected final UserService userService;
 
+    public static String NEXT_LINE = System.lineSeparator();
+
     public BaseStateAction(
             TelegramBot bot,
             UserService userService

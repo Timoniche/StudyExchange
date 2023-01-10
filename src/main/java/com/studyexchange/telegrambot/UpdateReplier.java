@@ -19,10 +19,13 @@ public class UpdateReplier {
     }
 
     public void replyUpdate(Update update) {
+        if (update.message() == null) {
+            return;
+        }
         long chatId = update.message().chat().id();
         User user = userService.findUserByChatId(chatId);
         if (user == null) {
-            stateActionFactory.stateActionFrom(UserState.NO_NAME).setupStateAndAskQuestions(chatId);
+            stateActionFactory.stateActionFrom(UserState.NO_NAME_INTRO).setupStateAndAskQuestions(chatId);
         } else {
             UserState nextUserStateToSetup = stateActionFactory.stateActionFrom(user.getUserState())
                     .processAnswerAndReturnNextStateToSetup(update);
