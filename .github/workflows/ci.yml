@@ -2,9 +2,9 @@ name: Docker to Yandex.Cloud
 
 on:
  push:
-    branches: [ master ]
+    branches: [ main ]
  pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build_and_test:
