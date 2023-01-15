@@ -55,6 +55,6 @@ public class RequestHelpEducational extends BaseStateAction {
 
     @Override
     public UserState processAnswerAndReturnNextStateToSetup(Update update) {
-        return null;
+        return UserState.REQUEST_HELP_EDUCATIONAL;
     }
 }
