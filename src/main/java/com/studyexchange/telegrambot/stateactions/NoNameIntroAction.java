@@ -16,6 +16,9 @@ public class NoNameIntroAction extends BaseStateAction {
             NEXT_LINE +
             "Как тебя зовут?";
 
+    private static final String EMPTY_NAME_TEXT = "" +
+            "Получил только пустое сообщение. Можешь ввести свое имя еще раз?";
+
     public NoNameIntroAction(TelegramBot bot, UserService userService) {
         super(bot, userService);
     }
@@ -36,7 +39,8 @@ public class NoNameIntroAction extends BaseStateAction {
     public UserState processAnswerAndReturnNextStateToSetup(Update update) {
         long chatId = update.message().chat().id();
         String newName = update.message().text();
-        if (newName == null) {
+        if (newName == null || newName.isBlank()) {
+            bot.execute(new SendMessage(chatId, EMPTY_NAME_TEXT));
             return null;
         }
         User user = userService.findUserByChatId(chatId);

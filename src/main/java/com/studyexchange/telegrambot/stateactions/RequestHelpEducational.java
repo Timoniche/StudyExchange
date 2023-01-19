@@ -24,10 +24,10 @@ public class RequestHelpEducational extends BaseStateAction {
 
     private static final ReplyKeyboardMarkup SUBJECTS_KEYBOARD =
             new ReplyKeyboardMarkup(
-                    new String[]{"Физика", "Химия", "Русский язык"},
-                    new String[]{"Математика", "Биология", "География"},
-                    new String[]{"Информатика", "Литература", "Английский язык"},
-                    new String[]{"Другое"}
+                    new String[]{"Математика", "Химия", "Русский язык"},
+                    new String[]{"Физика", "Биология", "Английский язык"},
+                    new String[]{"История", "Обществознание", "География"},
+                    new String[]{"Информатика", "Литература", "Другое"}
             )
                     .oneTimeKeyboard(true)
                     .resizeKeyboard(true);

@@ -29,11 +29,9 @@ public class UpdateReplier {
         } else {
             UserState nextUserStateToSetup = stateActionFactory.stateActionFrom(user.getUserState())
                     .processAnswerAndReturnNextStateToSetup(update);
-            if (nextUserStateToSetup == null) {
-                //todo:
-                throw new AssertionError();
+            if (nextUserStateToSetup != null) {
+                stateActionFactory.stateActionFrom(nextUserStateToSetup).setupStateAndAskQuestions(chatId);
             }
-            stateActionFactory.stateActionFrom(nextUserStateToSetup).setupStateAndAskQuestions(chatId);
         }
     }
 }
