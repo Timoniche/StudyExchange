@@ -8,16 +8,16 @@ import com.studyexchange.core.UserState;
 import com.studyexchange.service.UserService;
 
 public class NoNameIntroAction extends BaseStateAction {
-    private static final String GREETINGS_TEXT = "" +
-            "Привет! Давай знакомиться)" + NEXT_LINE +
-            NEXT_LINE +
-            "Я бот, помогающий людям обмениваться знаниями по разным предметам." + NEXT_LINE +
-            "Здесь ты сможешь выложить просьбу о помощи и обменять ее на помощь другому человеку." + NEXT_LINE +
-            NEXT_LINE +
-            "Как тебя зовут?";
+    private static final String GREETINGS_TEXT = ""
+            + "Привет! Давай знакомиться)" + NEXT_LINE
+            + NEXT_LINE
+            + "Я бот, помогающий людям обмениваться знаниями по разным предметам." + NEXT_LINE
+            + "Здесь ты сможешь выложить просьбу о помощи и обменять ее на помощь другому человеку." + NEXT_LINE
+            + NEXT_LINE
+            + "Как тебя зовут?";
 
-    private static final String EMPTY_NAME_TEXT = "" +
-            "Получил только пустое сообщение. Можешь ввести свое имя еще раз?";
+    private static final String EMPTY_NAME_TEXT = ""
+            + "Получил только пустое сообщение. Можешь ввести свое имя еще раз?";
 
     public NoNameIntroAction(TelegramBot bot, UserService userService) {
         super(bot, userService);

@@ -34,7 +34,7 @@ public class UserService {
 
     public static void checkUserNotNullOrThrow(User user, UserState userState) {
         if (user == null) {
-            throw new IllegalStateException("User with " +  userState.toString() + " state must exist");
+            throw new IllegalStateException("User with " + userState.toString() + " state must exist");
         }
     }
 }

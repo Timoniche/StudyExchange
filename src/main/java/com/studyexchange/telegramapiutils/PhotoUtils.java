@@ -5,7 +5,10 @@ import com.pengrad.telegrambot.model.PhotoSize;
 import java.util.Arrays;
 import java.util.Collections;
 
-public class PhotoUtils {
+public final class PhotoUtils {
+
+    private PhotoUtils() {
+    }
 
     public static PhotoSize pickBestPhoto(PhotoSize[] photos) {
         return Collections.max(

@@ -12,14 +12,14 @@ import static com.studyexchange.service.UserService.checkUserNotNullOrThrow;
 
 public class RequestHelpEducational extends BaseStateAction {
     private static String firstRequestingHelpText(String userName) {
-        return "" +
-                "Рад знакомству, " + userName + "!" + NEXT_LINE +
-                NEXT_LINE +
-                "Давай составим нашу первую просьбу о помощи. " + NEXT_LINE +
-                NEXT_LINE +
-                "Выбери, какой предмет вызывает у тебя трудности. " +
-                "Можно нажать кнопку \"Другое\", если нужна помощь с организацией чего-либо, " +
-                "или предложенные варианты не подходят.";
+        return ""
+                + "Рад знакомству, " + userName + "!" + NEXT_LINE
+                + NEXT_LINE
+                + "Давай составим нашу первую просьбу о помощи. " + NEXT_LINE
+                + NEXT_LINE
+                + "Выбери, какой предмет вызывает у тебя трудности. "
+                + "Можно нажать кнопку \"Другое\", если нужна помощь с организацией чего-либо, "
+                + "или предложенные варианты не подходят.";
     }
 
     private static final ReplyKeyboardMarkup SUBJECTS_KEYBOARD =
