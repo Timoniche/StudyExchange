@@ -11,7 +11,7 @@ public class UserService {
     private final UserDAO userDAO;
 
     public UserService(
-            UserDAO userDAO
+        UserDAO userDAO
     ) {
         this.userDAO = userDAO;
     }
@@ -20,16 +20,16 @@ public class UserService {
         return userDAO.findUserByChatId(chatId);
     }
 
-    public void putUserByChatId(User user) {
-        userDAO.putUserByChatId(user);
+    public void putUser(User user) {
+        userDAO.putUser(user);
     }
 
     public void updateUser(
-            @NotNull User user,
-            Consumer<User> modification
+        @NotNull User user,
+        Consumer<User> modification
     ) {
         modification.accept(user);
-        putUserByChatId(user);
+        putUser(user);
     }
 
     public static void checkUserNotNullOrThrow(User user, UserState userState) {

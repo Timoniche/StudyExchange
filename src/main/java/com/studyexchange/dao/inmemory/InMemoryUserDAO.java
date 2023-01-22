@@ -1,6 +1,7 @@
-package com.studyexchange.dao;
+package com.studyexchange.dao.inmemory;
 
 import com.studyexchange.core.User;
+import com.studyexchange.dao.UserDAO;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class InMemoryUserDAO implements UserDAO {
     }
 
     @Override
-    public void putUserByChatId(User user) {
+    public void putUser(User user) {
         userByChatId.put(user.getChatId(), user);
     }
 

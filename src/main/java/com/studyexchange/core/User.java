@@ -7,16 +7,16 @@ public class User {
 
     public static User newUser(long chatId, UserState userState) {
         return new User(
-                chatId,
-                null,
-                userState
+            chatId,
+            null,
+            userState
         );
     }
 
     public User(
-            long chatId,
-            String name,
-            UserState userState
+        long chatId,
+        String name,
+        UserState userState
     ) {
         this.chatId = chatId;
         this.name = name;

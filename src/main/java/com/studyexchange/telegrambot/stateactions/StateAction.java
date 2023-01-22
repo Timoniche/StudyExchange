@@ -8,7 +8,6 @@ public interface StateAction {
     void setupStateAndAskQuestions(long chatId);
 
     /**
-     *
      * @return NULL if processing update was not successful, next UserState to setup otherwise
      */
     UserState processAnswerAndReturnNextStateToSetup(Update update);

@@ -9,25 +9,28 @@ import com.studyexchange.service.UserService;
 
 public class NoNameIntroAction extends BaseStateAction {
     private static final String GREETINGS_TEXT = ""
-            + "Привет! Давай знакомиться)" + NEXT_LINE
-            + NEXT_LINE
-            + "Я бот, помогающий людям обмениваться знаниями по разным предметам." + NEXT_LINE
-            + "Здесь ты сможешь выложить просьбу о помощи и обменять ее на помощь другому человеку." + NEXT_LINE
-            + NEXT_LINE
-            + "Как тебя зовут?";
+        + "Привет! Давай знакомиться)" + NEXT_LINE
+        + NEXT_LINE
+        + "Я бот, помогающий людям обмениваться знаниями по разным предметам." + NEXT_LINE
+        + "Здесь ты сможешь выложить просьбу о помощи и обменять ее на помощь другому человеку" + NEXT_LINE
+        + NEXT_LINE
+        + "Как тебя зовут?";
 
     private static final String EMPTY_NAME_TEXT = ""
-            + "Получил только пустое сообщение. Можешь ввести свое имя еще раз?";
+        + "Получил только пустое сообщение. Можешь ввести свое имя еще раз?";
+
+    private final UserService userService;
 
     public NoNameIntroAction(TelegramBot bot, UserService userService) {
-        super(bot, userService);
+        super(bot);
+        this.userService = userService;
     }
 
     @Override
     public void setupStateAndAskQuestions(long chatId) {
         User user = userService.findUserByChatId(chatId);
         if (user == null) {
-            userService.putUserByChatId(User.newUser(chatId, UserState.NO_NAME_INTRO));
+            userService.putUser(User.newUser(chatId, UserState.NO_NAME_INTRO));
         } else {
             userService.updateUser(user, u -> u.setUserState(UserState.NO_NAME_INTRO));
         }

@@ -21,8 +21,8 @@ public class GatewayUpdateListener implements UpdatesListener {
     private final Gson gson;
 
     public GatewayUpdateListener(
-            UpdateReplier updateReplier,
-            String botToken
+        UpdateReplier updateReplier,
+        String botToken
     ) throws IOException {
         this.updateReplier = updateReplier;
         this.botToken = botToken;
@@ -42,10 +42,11 @@ public class GatewayUpdateListener implements UpdatesListener {
     private GetUpdatesResponse getLastUpdate() throws IOException {
         return getUpdates(-1);
     }
+
     private GetUpdatesResponse getUpdates(int offset) throws IOException {
         Request request = new Request.Builder()
-                .url("https://api.telegram.org/bot" + botToken + "/getUpdates?offset=" + offset)
-                .build();
+            .url("https://api.telegram.org/bot" + botToken + "/getUpdates?offset=" + offset)
+            .build();
         Call call = client.newCall(request);
         Response response = call.execute();
         return gson.fromJson(Objects.requireNonNull(response.body()).string(), GetUpdatesResponse.class);

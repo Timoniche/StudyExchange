@@ -6,5 +6,5 @@ public interface UserDAO {
 
     User findUserByChatId(long chatId);
 
-    void putUserByChatId(User user);
+    void putUser(User user);
 }

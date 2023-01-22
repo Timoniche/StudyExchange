@@ -11,8 +11,8 @@ public class UpdateReplier {
     private final StateActionFactory stateActionFactory;
 
     public UpdateReplier(
-            UserService userService,
-            StateActionFactory stateActionFactory
+        UserService userService,
+        StateActionFactory stateActionFactory
     ) {
         this.userService = userService;
         this.stateActionFactory = stateActionFactory;
@@ -28,7 +28,7 @@ public class UpdateReplier {
             stateActionFactory.stateActionFrom(UserState.NO_NAME_INTRO).setupStateAndAskQuestions(chatId);
         } else {
             UserState nextUserStateToSetup = stateActionFactory.stateActionFrom(user.getUserState())
-                    .processAnswerAndReturnNextStateToSetup(update);
+                .processAnswerAndReturnNextStateToSetup(update);
             if (nextUserStateToSetup != null) {
                 stateActionFactory.stateActionFrom(nextUserStateToSetup).setupStateAndAskQuestions(chatId);
             }
