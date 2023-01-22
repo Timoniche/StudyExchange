@@ -5,9 +5,14 @@ import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.studyexchange.core.HelpRequest;
 import com.studyexchange.core.Subject;
+import com.studyexchange.core.User;
 import com.studyexchange.core.UserState;
 import com.studyexchange.service.HelpRequestService;
+import com.studyexchange.service.UserService;
 import com.studyexchange.telegrambot.stateactions.BaseStateAction;
+
+import static com.studyexchange.service.HelpRequestService.checkHelpRequestNotNullOrThrow;
+import static com.studyexchange.service.UserService.checkUserNotNullOrThrow;
 
 public class FillHelpDescriptionEducational extends BaseStateAction {
     private static String fillDescriptionText(Subject subject) {
@@ -23,18 +28,21 @@ public class FillHelpDescriptionEducational extends BaseStateAction {
 
     public FillHelpDescriptionEducational(
         TelegramBot bot,
+        UserService userService,
         HelpRequestService helpRequestService
     ) {
-        super(bot);
+        super(bot, userService);
         this.helpRequestService = helpRequestService;
     }
 
     @Override
     public void setupStateAndAskQuestions(long chatId) {
+        User user = userService.findUserByChatId(chatId);
+        checkUserNotNullOrThrow(user, UserState.FILL_HELP_DESCRIPTION_EDUCATIONAL);
+        userService.updateUser(user, u -> u.setUserState(UserState.FILL_HELP_DESCRIPTION_EDUCATIONAL));
+
         HelpRequest lastHelpRequest = helpRequestService.findLastHelpRequestByChatId(chatId);
-        if (lastHelpRequest == null) {
-            throw new IllegalStateException("HelpRequest must exist in the FILL_DESCRIPTION state");
-        }
+        checkHelpRequestNotNullOrThrow(lastHelpRequest, UserState.FILL_HELP_DESCRIPTION_EDUCATIONAL);
         Subject subject = lastHelpRequest.getSubject();
         bot.execute(new SendMessage(chatId, fillDescriptionText(subject)));
     }
@@ -48,10 +56,9 @@ public class FillHelpDescriptionEducational extends BaseStateAction {
             return null;
         }
         HelpRequest lastHelpRequest = helpRequestService.findLastHelpRequestByChatId(chatId);
-        if (lastHelpRequest == null) {
-            throw new IllegalStateException("HelpRequest must exist in the FILL_DESCRIPTION state");
-        }
+        checkHelpRequestNotNullOrThrow(lastHelpRequest, UserState.FILL_HELP_DESCRIPTION_EDUCATIONAL);
+
         helpRequestService.updateHelpRequest(lastHelpRequest, r -> r.setDescription(description));
-        return UserState.FILL_HELP_DESCRIPTION_EDUCATIONAL;
+        return UserState.FILL_HELP_PHOTOS_EDUCATIONAL;
     }
 }

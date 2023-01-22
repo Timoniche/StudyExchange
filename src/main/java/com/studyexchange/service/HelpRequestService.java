@@ -1,6 +1,7 @@
 package com.studyexchange.service;
 
 import com.studyexchange.core.HelpRequest;
+import com.studyexchange.core.UserState;
 import com.studyexchange.dao.HelpRequestDAO;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,5 +28,11 @@ public class HelpRequestService {
 
     public HelpRequest findLastHelpRequestByChatId(long chatId) {
         return helpRequestDAO.findLastHelpRequestByChatId(chatId);
+    }
+
+    public static void checkHelpRequestNotNullOrThrow(HelpRequest helpRequest, UserState userState) {
+        if (helpRequest == null) {
+            throw new IllegalStateException("HelpRequest must exist in the " + userState + " state");
+        }
     }
 }

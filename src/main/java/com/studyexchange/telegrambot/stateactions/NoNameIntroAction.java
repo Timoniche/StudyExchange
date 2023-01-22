@@ -7,6 +7,8 @@ import com.studyexchange.core.User;
 import com.studyexchange.core.UserState;
 import com.studyexchange.service.UserService;
 
+import static com.studyexchange.service.UserService.checkUserNotNullOrThrow;
+
 public class NoNameIntroAction extends BaseStateAction {
     private static final String GREETINGS_TEXT = ""
         + "Привет! Давай знакомиться)" + NEXT_LINE
@@ -19,11 +21,8 @@ public class NoNameIntroAction extends BaseStateAction {
     private static final String EMPTY_NAME_TEXT = ""
         + "Получил только пустое сообщение. Можешь ввести свое имя еще раз?";
 
-    private final UserService userService;
-
     public NoNameIntroAction(TelegramBot bot, UserService userService) {
-        super(bot);
-        this.userService = userService;
+        super(bot, userService);
     }
 
     @Override
@@ -47,6 +46,7 @@ public class NoNameIntroAction extends BaseStateAction {
             return null;
         }
         User user = userService.findUserByChatId(chatId);
+        checkUserNotNullOrThrow(user, UserState.NO_NAME_INTRO);
         userService.updateUser(user, u -> u.setName(newName));
 
         return UserState.REQUEST_HELP_EDUCATIONAL;

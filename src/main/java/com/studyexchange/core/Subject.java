@@ -29,6 +29,27 @@ public enum Subject {
         return null;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String toHashtag() {
+        return switch (this) {
+            case MATHEMATICS -> "#математика";
+            case PHYSICS -> "#физика";
+            case INFORMATICS -> "#информатика";
+            case RUSSIAN -> "#русский";
+            case ENGLISH -> "#английский";
+            case CHEMISTRY -> "#химия";
+            case LITERATURE -> "#литература";
+            case GEOGRAPHY -> "#география";
+            case SOCIAL -> "#обществознание";
+            case BIOLOGY -> "#биология";
+            case HISTORY -> "#история";
+            case OTHER -> "#другое";
+        };
+    }
+
     public String prepositionalCase() {
         return switch (this) {
             case MATHEMATICS -> "математике";
@@ -61,10 +82,6 @@ public enum Subject {
             case HISTORY -> "истории";
             case OTHER -> "";
         };
-    }
-
-    public String getName() {
-        return name;
     }
 
 }

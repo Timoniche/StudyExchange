@@ -53,7 +53,6 @@ public class RequestHelpEducational extends BaseStateAction {
             .oneTimeKeyboard(true)
             .resizeKeyboard(true);
 
-    private final UserService userService;
     private final HelpRequestService helpRequestService;
 
     public RequestHelpEducational(
@@ -61,8 +60,7 @@ public class RequestHelpEducational extends BaseStateAction {
         UserService userService,
         HelpRequestService helpRequestService
     ) {
-        super(bot);
-        this.userService = userService;
+        super(bot, userService);
         this.helpRequestService = helpRequestService;
     }
 
