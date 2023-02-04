@@ -32,6 +32,10 @@ public class UserService {
         putUser(user);
     }
 
+    public void updateUser(long chatId, Consumer<User> modification) {
+        updateUser(findUserByChatId(chatId), modification);
+    }
+
     public static void checkUserNotNullOrThrow(User user, UserState userState) {
         if (user == null) {
             throw new IllegalStateException("User with " + userState.toString() + " state must exist");

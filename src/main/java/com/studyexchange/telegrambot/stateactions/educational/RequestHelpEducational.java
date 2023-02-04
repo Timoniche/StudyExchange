@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.response.SendResponse;
 import com.studyexchange.core.HelpRequest;
 import com.studyexchange.core.Subject;
 import com.studyexchange.core.User;
@@ -11,6 +12,8 @@ import com.studyexchange.core.UserState;
 import com.studyexchange.service.HelpRequestService;
 import com.studyexchange.service.UserService;
 import com.studyexchange.telegrambot.stateactions.BaseStateAction;
+
+import java.util.Optional;
 
 import static com.studyexchange.core.Subject.BIOLOGY;
 import static com.studyexchange.core.Subject.CHEMISTRY;
@@ -64,7 +67,7 @@ public class RequestHelpEducational extends BaseStateAction {
     }
 
     @Override
-    public void setupStateAndAskQuestions(long chatId) {
+    public int setupStateAndAskQuestions(long chatId) {
         User user = userService.findUserByChatId(chatId);
         checkUserNotNullOrThrow(user, UserState.REQUEST_HELP_EDUCATIONAL);
         userService.updateUser(user, u -> u.setUserState(UserState.REQUEST_HELP_EDUCATIONAL));
@@ -74,14 +77,15 @@ public class RequestHelpEducational extends BaseStateAction {
             throw new IllegalStateException("UserName can't be null in REQUEST_HELP_EDU state, chatId: " + chatId);
         }
 
-        bot.execute(
+        SendResponse questionMessage = bot.execute(
             new SendMessage(chatId, firstRequestingHelpText(userName))
                 .replyMarkup(SUBJECTS_KEYBOARD)
         );
+        return questionMessage.message().date();
     }
 
     @Override
-    public UserState processAnswerAndReturnNextStateToSetup(Update update) {
+    public Optional<UserState> processAnswerAndReturnNextStateToSetup(Update update) {
         long chatId = update.message().chat().id();
         String subjectAnswer = update.message().text();
         Subject subject = Subject.fromName(subjectAnswer);
@@ -90,10 +94,10 @@ public class RequestHelpEducational extends BaseStateAction {
                 new SendMessage(chatId, WRONG_SUBJECT_NAME)
                     .replyMarkup(SUBJECTS_KEYBOARD)
             );
-            return null;
+            return Optional.empty();
         }
         HelpRequest helpRequest = new HelpRequest(chatId, subject);
         helpRequestService.putHelpRequest(helpRequest);
-        return UserState.FILL_HELP_DESCRIPTION_EDUCATIONAL;
+        return Optional.of(UserState.FILL_HELP_DESCRIPTION_EDUCATIONAL);
     }
 }

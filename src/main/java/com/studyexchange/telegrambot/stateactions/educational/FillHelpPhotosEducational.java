@@ -5,6 +5,7 @@ import com.pengrad.telegrambot.model.PhotoSize;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.request.SendPhoto;
+import com.pengrad.telegrambot.response.SendResponse;
 import com.studyexchange.core.HelpRequest;
 import com.studyexchange.core.User;
 import com.studyexchange.core.UserState;
@@ -13,6 +14,7 @@ import com.studyexchange.service.UserService;
 import com.studyexchange.telegrambot.stateactions.BaseStateAction;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.studyexchange.service.HelpRequestService.checkHelpRequestNotNullOrThrow;
 import static com.studyexchange.service.UserService.checkUserNotNullOrThrow;
@@ -45,7 +47,7 @@ public class FillHelpPhotosEducational extends BaseStateAction {
     }
 
     @Override
-    public void setupStateAndAskQuestions(long chatId) {
+    public int setupStateAndAskQuestions(long chatId) {
         User user = userService.findUserByChatId(chatId);
         checkUserNotNullOrThrow(user, UserState.FILL_HELP_PHOTOS_EDUCATIONAL);
         userService.updateUser(user, u -> u.setUserState(UserState.FILL_HELP_PHOTOS_EDUCATIONAL));
@@ -53,18 +55,17 @@ public class FillHelpPhotosEducational extends BaseStateAction {
         HelpRequest lastHelpRequest = helpRequestService.findLastHelpRequestByChatId(chatId);
         checkHelpRequestNotNullOrThrow(lastHelpRequest, UserState.FILL_HELP_PHOTOS_EDUCATIONAL);
 
-        bot.execute(new SendMessage(chatId, ASK_PHOTO_TEXT));
+        SendResponse questionMessage = bot.execute(new SendMessage(chatId, ASK_PHOTO_TEXT));
+        return questionMessage.message().date();
     }
 
     @Override
-    public UserState processAnswerAndReturnNextStateToSetup(Update update) {
+    public Optional<UserState> processAnswerAndReturnNextStateToSetup(Update update) {
         long chatId = update.message().chat().id();
-        // sendMediaGroup will crash the code (send as different updates), need to write timestamps
-        // to take only 1 update per 1 question
         PhotoSize[] photo = update.message().photo();
         if (photo == null || photo.length == 0) {
             bot.execute(new SendMessage(chatId, EMPTY_PHOTO_TEXT));
-            return null;
+            return Optional.empty();
         }
         PhotoSize bestPhoto = pickBestPhoto(photo);
 
@@ -79,6 +80,6 @@ public class FillHelpPhotosEducational extends BaseStateAction {
             new SendPhoto(chatId, bestPhoto.fileId())
                 .caption(helpRequestForm(lastHelpRequest))
         );
-        return UserState.FILL_HELP_PHOTOS_EDUCATIONAL;
+        return Optional.of(UserState.FILL_HELP_PHOTOS_EDUCATIONAL);
     }
 }

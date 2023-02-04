@@ -50,23 +50,6 @@ public enum Subject {
         };
     }
 
-    public String prepositionalCase() {
-        return switch (this) {
-            case MATHEMATICS -> "математике";
-            case PHYSICS -> "физике";
-            case INFORMATICS -> "информатике";
-            case RUSSIAN -> "русском языке";
-            case ENGLISH -> "английском языке";
-            case CHEMISTRY -> "химии";
-            case LITERATURE -> "литературе";
-            case GEOGRAPHY -> "географии";
-            case SOCIAL -> "обществознании";
-            case BIOLOGY -> "биологии";
-            case HISTORY -> "истории";
-            case OTHER -> "";
-        };
-    }
-
     public String dativeCase() {
         return switch (this) {
             case MATHEMATICS -> "математике";

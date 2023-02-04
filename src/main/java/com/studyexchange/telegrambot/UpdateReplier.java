@@ -8,6 +8,8 @@ import com.studyexchange.telegrambot.stateactions.StateActionFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Optional;
+
 public class UpdateReplier {
     private static final Logger log = LogManager.getLogger(UpdateReplier.class);
 
@@ -26,17 +28,26 @@ public class UpdateReplier {
         if (update.message() == null) {
             return;
         }
-        log.info(update.message());
         long chatId = update.message().chat().id();
         User user = userService.findUserByChatId(chatId);
         if (user == null) {
-            stateActionFactory.stateActionFrom(UserState.NO_NAME_INTRO).setupStateAndAskQuestions(chatId);
-        } else {
-            UserState nextUserStateToSetup = stateActionFactory.stateActionFrom(user.getUserState())
-                .processAnswerAndReturnNextStateToSetup(update);
-            if (nextUserStateToSetup != null) {
-                stateActionFactory.stateActionFrom(nextUserStateToSetup).setupStateAndAskQuestions(chatId);
-            }
+            int botReplyDate = stateActionFactory.stateActionFrom(UserState.NO_NAME_INTRO)
+                .setupStateAndAskQuestions(chatId);
+            userService.updateUser(chatId, u -> u.setLastBotAnswerDate(botReplyDate));
+            return;
+        }
+
+        if (user.getLastBotAnswerDate() >= update.message().date()) {
+            log.warn("UpdateId {} is ignored", update.updateId());
+            return;
+        }
+
+        Optional<UserState> nextUserStateToSetup = stateActionFactory.stateActionFrom(user.getUserState())
+            .processAnswerAndReturnNextStateToSetup(update);
+        if (nextUserStateToSetup.isPresent()) {
+            int botReplyDate = stateActionFactory.stateActionFrom(nextUserStateToSetup.get())
+                .setupStateAndAskQuestions(chatId);
+            userService.updateUser(chatId, u -> u.setLastBotAnswerDate(botReplyDate));
         }
     }
 }

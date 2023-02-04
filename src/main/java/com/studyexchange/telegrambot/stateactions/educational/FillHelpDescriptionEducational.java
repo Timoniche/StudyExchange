@@ -3,6 +3,7 @@ package com.studyexchange.telegrambot.stateactions.educational;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.response.SendResponse;
 import com.studyexchange.core.HelpRequest;
 import com.studyexchange.core.Subject;
 import com.studyexchange.core.User;
@@ -10,6 +11,8 @@ import com.studyexchange.core.UserState;
 import com.studyexchange.service.HelpRequestService;
 import com.studyexchange.service.UserService;
 import com.studyexchange.telegrambot.stateactions.BaseStateAction;
+
+import java.util.Optional;
 
 import static com.studyexchange.service.HelpRequestService.checkHelpRequestNotNullOrThrow;
 import static com.studyexchange.service.UserService.checkUserNotNullOrThrow;
@@ -36,7 +39,7 @@ public class FillHelpDescriptionEducational extends BaseStateAction {
     }
 
     @Override
-    public void setupStateAndAskQuestions(long chatId) {
+    public int setupStateAndAskQuestions(long chatId) {
         User user = userService.findUserByChatId(chatId);
         checkUserNotNullOrThrow(user, UserState.FILL_HELP_DESCRIPTION_EDUCATIONAL);
         userService.updateUser(user, u -> u.setUserState(UserState.FILL_HELP_DESCRIPTION_EDUCATIONAL));
@@ -44,21 +47,22 @@ public class FillHelpDescriptionEducational extends BaseStateAction {
         HelpRequest lastHelpRequest = helpRequestService.findLastHelpRequestByChatId(chatId);
         checkHelpRequestNotNullOrThrow(lastHelpRequest, UserState.FILL_HELP_DESCRIPTION_EDUCATIONAL);
         Subject subject = lastHelpRequest.getSubject();
-        bot.execute(new SendMessage(chatId, fillDescriptionText(subject)));
+        SendResponse questionMessage = bot.execute(new SendMessage(chatId, fillDescriptionText(subject)));
+        return questionMessage.message().date();
     }
 
     @Override
-    public UserState processAnswerAndReturnNextStateToSetup(Update update) {
+    public Optional<UserState> processAnswerAndReturnNextStateToSetup(Update update) {
         long chatId = update.message().chat().id();
         String description = update.message().text();
         if (description == null || description.isBlank()) {
             bot.execute(new SendMessage(chatId, EMPTY_DESCRIPTION_MESSAGE));
-            return null;
+            return Optional.empty();
         }
         HelpRequest lastHelpRequest = helpRequestService.findLastHelpRequestByChatId(chatId);
         checkHelpRequestNotNullOrThrow(lastHelpRequest, UserState.FILL_HELP_DESCRIPTION_EDUCATIONAL);
 
         helpRequestService.updateHelpRequest(lastHelpRequest, r -> r.setDescription(description));
-        return UserState.FILL_HELP_PHOTOS_EDUCATIONAL;
+        return Optional.of(UserState.FILL_HELP_PHOTOS_EDUCATIONAL);
     }
 }
