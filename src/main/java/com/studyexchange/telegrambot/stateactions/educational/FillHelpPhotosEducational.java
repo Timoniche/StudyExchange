@@ -19,8 +19,8 @@ import static com.studyexchange.service.UserService.checkUserNotNullOrThrow;
 import static com.studyexchange.telegramapiutils.PhotoUtils.pickBestPhoto;
 
 public class FillHelpPhotosEducational extends BaseStateAction {
-    private static final String ASK_PHOTOS_TEXT = ""
-        + "Можешь прикрепить фотографии, полезные для твоей просьбы о помощи";
+    private static final String ASK_PHOTO_TEXT = ""
+        + "Можешь прикрепить фотографию, полезную для твоей просьбы о помощи";
 
     private static final String EMPTY_PHOTO_TEXT = ""
         + "Прикрепи фото, полезное для твоей задачи или нажми кнопку...";
@@ -53,7 +53,7 @@ public class FillHelpPhotosEducational extends BaseStateAction {
         HelpRequest lastHelpRequest = helpRequestService.findLastHelpRequestByChatId(chatId);
         checkHelpRequestNotNullOrThrow(lastHelpRequest, UserState.FILL_HELP_PHOTOS_EDUCATIONAL);
 
-        bot.execute(new SendMessage(chatId, ASK_PHOTOS_TEXT));
+        bot.execute(new SendMessage(chatId, ASK_PHOTO_TEXT));
     }
 
     @Override

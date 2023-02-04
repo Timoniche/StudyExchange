@@ -45,10 +45,9 @@ public class RequestHelpEducational extends BaseStateAction {
     private static final ReplyKeyboardMarkup SUBJECTS_KEYBOARD =
         new ReplyKeyboardMarkup(
             new String[]{MATHEMATICS.getName(), PHYSICS.getName(), INFORMATICS.getName()},
-            new String[]{RUSSIAN.getName(), ENGLISH.getName()},
             new String[]{CHEMISTRY.getName(), LITERATURE.getName(), GEOGRAPHY.getName()},
             new String[]{SOCIAL.getName(), BIOLOGY.getName(), HISTORY.getName()},
-            new String[]{OTHER.getName()}
+            new String[]{RUSSIAN.getName(), ENGLISH.getName(), OTHER.getName()}
         )
             .oneTimeKeyboard(true)
             .resizeKeyboard(true);

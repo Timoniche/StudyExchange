@@ -8,6 +8,7 @@ import com.studyexchange.telegrambot.stateactions.educational.FillHelpDescriptio
 import com.studyexchange.telegrambot.stateactions.educational.FillHelpPhotosEducational;
 import com.studyexchange.telegrambot.stateactions.educational.RequestHelpEducational;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class StateActionFactory {
@@ -18,33 +19,45 @@ public class StateActionFactory {
         UserService userService,
         HelpRequestService helpRequestService
     ) {
-        stateToAction = Map.of(
-            UserState.NO_NAME_INTRO, new NoNameIntroAction(bot, userService),
-            UserState.REQUEST_HELP_EDUCATIONAL, new RequestHelpEducational(
+        stateToAction = new HashMap<>();
+        for (UserState userState : UserState.values()) {
+            BaseStateAction stateAction = generateStateActionFrom(
+                userState,
                 bot,
                 userService,
                 helpRequestService
-            ),
-            UserState.FILL_HELP_DESCRIPTION_EDUCATIONAL, new FillHelpDescriptionEducational(
+            );
+            stateToAction.put(userState, stateAction);
+        }
+    }
+
+    private static BaseStateAction generateStateActionFrom(
+        UserState userState,
+        TelegramBot bot,
+        UserService userService,
+        HelpRequestService helpRequestService
+    ) {
+        return switch (userState) {
+            case NO_NAME_INTRO -> new NoNameIntroAction(bot, userService);
+            case REQUEST_HELP_EDUCATIONAL -> new RequestHelpEducational(
                 bot,
                 userService,
                 helpRequestService
-            ),
-            UserState.FILL_HELP_PHOTOS_EDUCATIONAL, new FillHelpPhotosEducational(
+            );
+            case FILL_HELP_DESCRIPTION_EDUCATIONAL -> new FillHelpDescriptionEducational(
                 bot,
                 userService,
                 helpRequestService
-            )
-        );
+            );
+            case FILL_HELP_PHOTOS_EDUCATIONAL -> new FillHelpPhotosEducational(
+                bot,
+                userService,
+                helpRequestService
+            );
+        };
     }
 
     public BaseStateAction stateActionFrom(UserState userState) {
-        //don't collapse switch (to force fill new UserState)
-        return switch (userState) {
-            case NO_NAME_INTRO -> stateToAction.get(UserState.NO_NAME_INTRO);
-            case REQUEST_HELP_EDUCATIONAL -> stateToAction.get(UserState.REQUEST_HELP_EDUCATIONAL);
-            case FILL_HELP_DESCRIPTION_EDUCATIONAL -> stateToAction.get(UserState.FILL_HELP_DESCRIPTION_EDUCATIONAL);
-            case FILL_HELP_PHOTOS_EDUCATIONAL -> stateToAction.get(UserState.FILL_HELP_PHOTOS_EDUCATIONAL);
-        };
+        return stateToAction.get(userState);
     }
 }

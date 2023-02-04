@@ -9,11 +9,9 @@ import com.studyexchange.telegrambot.GatewayUpdateListener;
 import com.studyexchange.telegrambot.UpdateReplier;
 import com.studyexchange.telegrambot.stateactions.StateActionFactory;
 
-import java.io.IOException;
-
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         if (args.length == 0) {
             throw new IllegalArgumentException("Specify bot token");
         }
@@ -30,7 +28,7 @@ public class Main {
             userService,
             stateActionFactory
         );
-        GatewayUpdateListener gatewayUpdateListener = new GatewayUpdateListener(updateReplier, token);
+        GatewayUpdateListener gatewayUpdateListener = new GatewayUpdateListener(updateReplier, bot);
         bot.setUpdatesListener(gatewayUpdateListener);
     }
 }
