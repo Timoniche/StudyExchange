@@ -6,6 +6,7 @@ import com.studyexchange.service.HelpRequestService;
 import com.studyexchange.service.UserService;
 import com.studyexchange.telegrambot.stateactions.educational.FillHelpDescriptionEducational;
 import com.studyexchange.telegrambot.stateactions.educational.FillHelpPhotosEducational;
+import com.studyexchange.telegrambot.stateactions.educational.FillTopicsCanHelpEducational;
 import com.studyexchange.telegrambot.stateactions.educational.RequestHelpEducational;
 
 import java.util.HashMap;
@@ -53,6 +54,10 @@ public class StateActionFactory {
                 bot,
                 userService,
                 helpRequestService
+            );
+            case FILL_TOPICS_CAN_HELP_EDUCATIONAL -> new FillTopicsCanHelpEducational(
+                bot,
+                userService
             );
         };
     }

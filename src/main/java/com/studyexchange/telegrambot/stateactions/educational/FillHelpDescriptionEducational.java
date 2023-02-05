@@ -53,6 +53,9 @@ public class FillHelpDescriptionEducational extends BaseStateAction {
 
     @Override
     public Optional<UserState> processAnswerAndReturnNextStateToSetup(Update update) {
+        if (update.message() == null) {
+            return Optional.empty();
+        }
         long chatId = update.message().chat().id();
         String description = update.message().text();
         if (description == null || description.isBlank()) {

@@ -4,7 +4,6 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.PhotoSize;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
-import com.pengrad.telegrambot.request.SendPhoto;
 import com.pengrad.telegrambot.response.SendResponse;
 import com.studyexchange.core.HelpRequest;
 import com.studyexchange.core.User;
@@ -27,8 +26,13 @@ public class FillHelpPhotosEducational extends BaseStateAction {
     private static final String EMPTY_PHOTO_TEXT = ""
         + "Прикрепи фото, полезное для твоей задачи или нажми кнопку...";
 
-    private static String helpRequestForm(HelpRequest helpRequest) {
+    private static String notifyHelpRequestFormCompleted(HelpRequest helpRequest) {
         return ""
+            + "Ура! Мы составили нашу первую просьбу о помощи:)"
+            + NEXT_LINE
+            + "Твоя просьба о помощи сейчас выглядит так:"
+            + NEXT_LINE
+            + NEXT_LINE
             + helpRequest.getSubject().toHashtag()
             + NEXT_LINE
             + NEXT_LINE
@@ -61,6 +65,9 @@ public class FillHelpPhotosEducational extends BaseStateAction {
 
     @Override
     public Optional<UserState> processAnswerAndReturnNextStateToSetup(Update update) {
+        if (update.message() == null) {
+            return Optional.empty();
+        }
         long chatId = update.message().chat().id();
         PhotoSize[] photo = update.message().photo();
         if (photo == null || photo.length == 0) {
@@ -77,9 +84,9 @@ public class FillHelpPhotosEducational extends BaseStateAction {
         ));
 
         bot.execute(
-            new SendPhoto(chatId, bestPhoto.fileId())
-                .caption(helpRequestForm(lastHelpRequest))
+            new SendMessage(chatId, notifyHelpRequestFormCompleted(lastHelpRequest))
         );
-        return Optional.of(UserState.FILL_HELP_PHOTOS_EDUCATIONAL);
+
+        return Optional.of(UserState.FILL_TOPICS_CAN_HELP_EDUCATIONAL);
     }
 }

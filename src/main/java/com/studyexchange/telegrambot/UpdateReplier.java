@@ -25,10 +25,12 @@ public class UpdateReplier {
     }
 
     public void replyUpdate(Update update) {
-        if (update.message() == null) {
+        log.info(update);
+
+        Long chatId = retrieveChatId(update);
+        if (chatId == null) {
             return;
         }
-        long chatId = update.message().chat().id();
         User user = userService.findUserByChatId(chatId);
         if (user == null) {
             int botReplyDate = stateActionFactory.stateActionFrom(UserState.NO_NAME_INTRO)
@@ -37,7 +39,7 @@ public class UpdateReplier {
             return;
         }
 
-        if (user.getLastBotAnswerDate() >= update.message().date()) {
+        if (update.message() != null && user.getLastBotAnswerDate() >= update.message().date()) {
             log.warn("UpdateId {} is ignored", update.updateId());
             return;
         }
@@ -49,5 +51,15 @@ public class UpdateReplier {
                 .setupStateAndAskQuestions(chatId);
             userService.updateUser(chatId, u -> u.setLastBotAnswerDate(botReplyDate));
         }
+    }
+
+    private Long retrieveChatId(Update update) {
+        if (update.message() != null) {
+            return update.message().chat().id();
+        }
+        if (update.callbackQuery() != null) {
+            return update.callbackQuery().message().chat().id();
+        }
+        return null;
     }
 }

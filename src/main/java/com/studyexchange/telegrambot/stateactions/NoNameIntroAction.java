@@ -43,6 +43,9 @@ public class NoNameIntroAction extends BaseStateAction {
 
     @Override
     public Optional<UserState> processAnswerAndReturnNextStateToSetup(Update update) {
+        if (update.message() == null) {
+            return Optional.empty();
+        }
         long chatId = update.message().chat().id();
         String newName = update.message().text();
         if (newName == null || newName.isBlank()) {

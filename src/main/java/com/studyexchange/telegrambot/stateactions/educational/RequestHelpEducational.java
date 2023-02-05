@@ -86,6 +86,9 @@ public class RequestHelpEducational extends BaseStateAction {
 
     @Override
     public Optional<UserState> processAnswerAndReturnNextStateToSetup(Update update) {
+        if (update.message() == null) {
+            return Optional.empty();
+        }
         long chatId = update.message().chat().id();
         String subjectAnswer = update.message().text();
         Subject subject = Subject.fromName(subjectAnswer);
