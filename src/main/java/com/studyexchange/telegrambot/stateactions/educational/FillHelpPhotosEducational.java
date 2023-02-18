@@ -4,6 +4,7 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.PhotoSize;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import com.pengrad.telegrambot.request.SendPhoto;
 import com.pengrad.telegrambot.response.SendResponse;
 import com.studyexchange.core.HelpRequest;
 import com.studyexchange.core.User;
@@ -84,7 +85,8 @@ public class FillHelpPhotosEducational extends BaseStateAction {
         ));
 
         bot.execute(
-            new SendMessage(chatId, notifyHelpRequestFormCompleted(lastHelpRequest))
+            new SendPhoto(chatId, bestPhoto.fileId())
+                .caption(notifyHelpRequestFormCompleted(lastHelpRequest))
         );
 
         return Optional.of(UserState.FILL_TOPICS_CAN_HELP_EDUCATIONAL);

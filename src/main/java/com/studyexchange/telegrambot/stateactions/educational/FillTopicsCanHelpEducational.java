@@ -27,11 +27,13 @@ public class FillTopicsCanHelpEducational extends BaseStateAction {
     private static final String ASK_SUBJECTS_CAN_HELP_WITH = ""
         + "Теперь давай укажем, с какими предметами ты хотел бы помогать другим людям."
         + NEXT_LINE
-        + "Нажми на ⛔, когда завершишь свой выбор";
+        + "Нажми на ⛔, когда завершишь свой выбор (нужно выбрать хотя бы один предмет)";
 
     private static InlineKeyboardMarkup subjectsInlineKeyboard(EnumSet<Subject> subjectsCanHelpWith) {
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
-        keyboard.addRow(new InlineKeyboardButton("⛔️ Завершить выбор").callbackData(COMPLETE_SELECTION));
+        if (!subjectsCanHelpWith.isEmpty()) {
+            keyboard.addRow(new InlineKeyboardButton("⛔️ Завершить выбор").callbackData(COMPLETE_SELECTION));
+        }
         for (Subject subject : Subject.values()) {
             String subjectName = subject.getName();
             String buttonText;

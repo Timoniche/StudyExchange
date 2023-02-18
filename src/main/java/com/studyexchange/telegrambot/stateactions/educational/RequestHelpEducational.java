@@ -30,30 +30,34 @@ import static com.studyexchange.core.Subject.SOCIAL;
 import static com.studyexchange.service.UserService.checkUserNotNullOrThrow;
 
 public class RequestHelpEducational extends BaseStateAction {
-    private static String firstRequestingHelpText(String userName) {
-        return ""
-            + "Рад знакомству, " + userName + "!" + NEXT_LINE
-            + NEXT_LINE
+    private static final String REQUESTING_HELP_TEXT = ""
             + "Давай составим нашу первую просьбу о помощи. " + NEXT_LINE
             + NEXT_LINE
             + "Выбери, какой предмет вызывает у тебя трудности. "
             + "Можно нажать кнопку \"" + OTHER.getName() + "\", "
             + "если нужна помощь с организацией чего-либо, "
             + "или предложенные варианты не подходят";
-    }
 
     private static final String WRONG_SUBJECT_NAME = ""
         + "К сожалению, такого предмета еще нет. Пожалуйста, выбери предмет из списка";
 
     private static final ReplyKeyboardMarkup SUBJECTS_KEYBOARD =
         new ReplyKeyboardMarkup(
-            new String[]{MATHEMATICS.getName(), PHYSICS.getName(), INFORMATICS.getName()},
-            new String[]{CHEMISTRY.getName(), LITERATURE.getName(), GEOGRAPHY.getName()},
-            new String[]{SOCIAL.getName(), BIOLOGY.getName(), HISTORY.getName()},
-            new String[]{RUSSIAN.getName(), ENGLISH.getName(), OTHER.getName()}
+            subjectNames(MATHEMATICS, PHYSICS, INFORMATICS),
+            subjectNames(CHEMISTRY, LITERATURE, GEOGRAPHY),
+            subjectNames(SOCIAL, BIOLOGY, HISTORY),
+            subjectNames(RUSSIAN, ENGLISH, OTHER)
         )
             .oneTimeKeyboard(true)
             .resizeKeyboard(true);
+
+    private static String[] subjectNames(Subject... subjects) {
+        String[] names = new String[subjects.length];
+        for (int i = 0; i < subjects.length; i++) {
+            names[i] = subjects[i].getName();
+        }
+        return names;
+    }
 
     private final HelpRequestService helpRequestService;
 
@@ -78,7 +82,7 @@ public class RequestHelpEducational extends BaseStateAction {
         }
 
         SendResponse questionMessage = bot.execute(
-            new SendMessage(chatId, firstRequestingHelpText(userName))
+            new SendMessage(chatId, REQUESTING_HELP_TEXT)
                 .replyMarkup(SUBJECTS_KEYBOARD)
         );
         return questionMessage.message().date();

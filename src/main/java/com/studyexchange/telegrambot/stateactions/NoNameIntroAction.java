@@ -56,6 +56,6 @@ public class NoNameIntroAction extends BaseStateAction {
         checkUserNotNullOrThrow(user, UserState.NO_NAME_INTRO);
         userService.updateUser(user, u -> u.setName(newName));
 
-        return Optional.of(UserState.REQUEST_HELP_EDUCATIONAL);
+        return Optional.of(UserState.NO_GRADE);
     }
 }

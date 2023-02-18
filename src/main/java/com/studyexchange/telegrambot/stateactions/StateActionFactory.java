@@ -40,6 +40,7 @@ public class StateActionFactory {
     ) {
         return switch (userState) {
             case NO_NAME_INTRO -> new NoNameIntroAction(bot, userService);
+            case NO_GRADE -> new NoGradeAction(bot, userService);
             case REQUEST_HELP_EDUCATIONAL -> new RequestHelpEducational(
                 bot,
                 userService,

@@ -1,6 +1,8 @@
 package com.studyexchange.telegrambot;
 
+import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.request.SendMessage;
 import com.studyexchange.core.User;
 import com.studyexchange.core.UserState;
 import com.studyexchange.service.UserService;
@@ -12,16 +14,22 @@ import java.util.Optional;
 
 public class UpdateReplier {
     private static final Logger log = LogManager.getLogger(UpdateReplier.class);
+    private static final String ERROR_MESSAGE = ""
+        + "К сожалению, во время обработки сообщения возникла ошибка. "
+        + "Попробуй отправить сообщение еще раз";
 
     private final UserService userService;
     private final StateActionFactory stateActionFactory;
+    private final TelegramBot bot;
 
     public UpdateReplier(
         UserService userService,
-        StateActionFactory stateActionFactory
+        StateActionFactory stateActionFactory,
+        TelegramBot bot
     ) {
         this.userService = userService;
         this.stateActionFactory = stateActionFactory;
+        this.bot = bot;
     }
 
     public void replyUpdate(Update update) {
@@ -31,25 +39,30 @@ public class UpdateReplier {
         if (chatId == null) {
             return;
         }
-        User user = userService.findUserByChatId(chatId);
-        if (user == null) {
-            int botReplyDate = stateActionFactory.stateActionFrom(UserState.NO_NAME_INTRO)
-                .setupStateAndAskQuestions(chatId);
-            userService.updateUser(chatId, u -> u.setLastBotAnswerDate(botReplyDate));
-            return;
-        }
+        try {
+            User user = userService.findUserByChatId(chatId);
+            if (user == null) {
+                int botReplyDate = stateActionFactory.stateActionFrom(UserState.NO_NAME_INTRO)
+                    .setupStateAndAskQuestions(chatId);
+                userService.updateUser(chatId, u -> u.setLastBotAnswerDate(botReplyDate));
+                return;
+            }
 
-        if (update.message() != null && user.getLastBotAnswerDate() >= update.message().date()) {
-            log.warn("UpdateId {} is ignored", update.updateId());
-            return;
-        }
+            if (update.message() != null && user.getLastBotAnswerDate() >= update.message().date()) {
+                log.warn("UpdateId {} is ignored", update.updateId());
+                return;
+            }
 
-        Optional<UserState> nextUserStateToSetup = stateActionFactory.stateActionFrom(user.getUserState())
-            .processAnswerAndReturnNextStateToSetup(update);
-        if (nextUserStateToSetup.isPresent()) {
-            int botReplyDate = stateActionFactory.stateActionFrom(nextUserStateToSetup.get())
-                .setupStateAndAskQuestions(chatId);
-            userService.updateUser(chatId, u -> u.setLastBotAnswerDate(botReplyDate));
+            Optional<UserState> nextUserStateToSetup = stateActionFactory.stateActionFrom(user.getUserState())
+                .processAnswerAndReturnNextStateToSetup(update);
+            if (nextUserStateToSetup.isPresent()) {
+                int botReplyDate = stateActionFactory.stateActionFrom(nextUserStateToSetup.get())
+                    .setupStateAndAskQuestions(chatId);
+                userService.updateUser(chatId, u -> u.setLastBotAnswerDate(botReplyDate));
+            }
+        } catch (Exception ex) {
+            log.error("chatId: {}, ex: {}", chatId, ex.getMessage());
+            bot.execute(new SendMessage(chatId, ERROR_MESSAGE));
         }
     }
 

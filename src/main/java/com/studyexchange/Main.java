@@ -26,7 +26,8 @@ public class Main {
         );
         UpdateReplier updateReplier = new UpdateReplier(
             userService,
-            stateActionFactory
+            stateActionFactory,
+            bot
         );
         GatewayUpdateListener gatewayUpdateListener = new GatewayUpdateListener(updateReplier, bot);
         bot.setUpdatesListener(gatewayUpdateListener);

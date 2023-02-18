@@ -8,23 +8,27 @@ public class User {
     private UserState userState;
     private int lastBotAnswerDate;
     private final EnumSet<Subject> subjectsCanHelpWith;
+    private Grade grade;
 
     public static User newUser(long chatId, UserState userState) {
         return new User(
             chatId,
             null,
-            userState
+            userState,
+            null
         );
     }
 
     public User(
         long chatId,
         String name,
-        UserState userState
+        UserState userState,
+        Grade grade
     ) {
         this.chatId = chatId;
         this.name = name;
         this.userState = userState;
+        this.grade = grade;
         lastBotAnswerDate = 0;
         subjectsCanHelpWith = EnumSet.noneOf(Subject.class);
     }
@@ -43,6 +47,10 @@ public class User {
 
     public int getLastBotAnswerDate() {
         return lastBotAnswerDate;
+    }
+
+    public Grade getGrade() {
+        return grade;
     }
 
     public EnumSet<Subject> getSubjectsCanHelpWith() {
@@ -67,5 +75,9 @@ public class User {
 
     public void setLastBotAnswerDate(int lastBotAnswerDate) {
         this.lastBotAnswerDate = lastBotAnswerDate;
+    }
+
+    public void setGrade(Grade grade) {
+        this.grade = grade;
     }
 }
