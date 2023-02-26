@@ -22,6 +22,23 @@ public enum Grade {
         this.gradeNumber = gradeNumber;
     }
 
+    public String toHashtag() {
+        return switch (this) {
+            case FIRST -> "#1_класс";
+            case SECOND -> "#2_класс";
+            case THIRD -> "#3_класс";
+            case FOURTH -> "#4_класс";
+            case FIFTH -> "#5_класс";
+            case SIXTH -> "#6_класс";
+            case SEVENTH -> "#7_класс";
+            case EIGHTH -> "#8_класс";
+            case NINTH -> "#9_класс";
+            case TENTH -> "#10_класс";
+            case ELEVENTH -> "#11_класс";
+            case GRADUATED -> "#выпускник";
+        };
+    }
+
     public static Grade fromName(String name) {
         for (Grade grade : Grade.values()) {
             if (grade.getGradeName().equalsIgnoreCase(name)) {

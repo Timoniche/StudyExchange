@@ -7,6 +7,7 @@ import com.studyexchange.service.UserService;
 import com.studyexchange.telegrambot.stateactions.educational.FillHelpDescriptionEducational;
 import com.studyexchange.telegrambot.stateactions.educational.FillHelpPhotosEducational;
 import com.studyexchange.telegrambot.stateactions.educational.FillTopicsCanHelpEducational;
+import com.studyexchange.telegrambot.stateactions.educational.ReadyToSearchEducational;
 import com.studyexchange.telegrambot.stateactions.educational.RequestHelpEducational;
 
 import java.util.HashMap;
@@ -60,6 +61,11 @@ public class StateActionFactory {
                 bot,
                 userService
             );
+            case READY_TO_SEARCH_EDUCATIONAL -> new ReadyToSearchEducational(
+                bot,
+                userService
+            );
+            case SEARCHING -> new SearchingAction(bot, userService);
         };
     }
 

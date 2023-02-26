@@ -33,7 +33,8 @@ public class RequestHelpEducational extends BaseStateAction {
     private static final String REQUESTING_HELP_TEXT = ""
             + "Давай составим нашу первую просьбу о помощи. " + NEXT_LINE
             + NEXT_LINE
-            + "Выбери, какой предмет вызывает у тебя трудности. "
+            + "Выбери, какой предмет вызывает у тебя трудности. " + NEXT_LINE
+            + NEXT_LINE
             + "Можно нажать кнопку \"" + OTHER.getName() + "\", "
             + "если нужна помощь с организацией чего-либо, "
             + "или предложенные варианты не подходят";

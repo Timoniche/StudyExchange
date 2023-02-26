@@ -75,8 +75,7 @@ public class FillTopicsCanHelpEducational extends BaseStateAction {
         }
         long chatId = callback.message().chat().id();
         if (callback.data().equals(COMPLETE_SELECTION)) {
-            bot.execute(new SendMessage(chatId, "COMPLETED"));
-            return Optional.empty();
+            return Optional.of(UserState.READY_TO_SEARCH_EDUCATIONAL);
         }
         Subject selectedSubject = Subject.fromName(callback.data());
 
