@@ -1,6 +1,7 @@
 package com.studyexchange.telegrambot.stateactions;
 
 import com.pengrad.telegrambot.TelegramBot;
+import com.studyexchange.core.Matcher;
 import com.studyexchange.core.UserState;
 import com.studyexchange.service.HelpRequestService;
 import com.studyexchange.service.UserService;
@@ -19,7 +20,8 @@ public class StateActionFactory {
     public StateActionFactory(
         TelegramBot bot,
         UserService userService,
-        HelpRequestService helpRequestService
+        HelpRequestService helpRequestService,
+        Matcher matcher
     ) {
         stateToAction = new HashMap<>();
         for (UserState userState : UserState.values()) {
@@ -27,7 +29,8 @@ public class StateActionFactory {
                 userState,
                 bot,
                 userService,
-                helpRequestService
+                helpRequestService,
+                matcher
             );
             stateToAction.put(userState, stateAction);
         }
@@ -37,7 +40,8 @@ public class StateActionFactory {
         UserState userState,
         TelegramBot bot,
         UserService userService,
-        HelpRequestService helpRequestService
+        HelpRequestService helpRequestService,
+        Matcher matcher
     ) {
         return switch (userState) {
             case NO_NAME_INTRO -> new NoNameIntroAction(bot, userService);
@@ -57,15 +61,13 @@ public class StateActionFactory {
                 userService,
                 helpRequestService
             );
-            case FILL_TOPICS_CAN_HELP_EDUCATIONAL -> new FillTopicsCanHelpEducational(
+            case FILL_TOPICS_CAN_HELP_EDUCATIONAL -> new FillTopicsCanHelpEducational(bot, userService);
+            case READY_TO_SEARCH_EDUCATIONAL -> new ReadyToSearchEducational(bot, userService);
+            case APPLY_FILTERS_START_SEARCHING -> new ApplyFiltersStartSearchingAction(
                 bot,
-                userService
+                userService,
+                matcher
             );
-            case READY_TO_SEARCH_EDUCATIONAL -> new ReadyToSearchEducational(
-                bot,
-                userService
-            );
-            case SEARCHING -> new SearchingAction(bot, userService);
         };
     }
 

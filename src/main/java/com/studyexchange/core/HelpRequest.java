@@ -2,9 +2,9 @@ package com.studyexchange.core;
 
 import java.util.List;
 
-import static com.studyexchange.telegrambot.stateactions.BaseStateAction.NEXT_LINE;
-import static com.studyexchange.telegrambot.stateactions.BaseStateAction.bold;
-import static com.studyexchange.telegrambot.stateactions.BaseStateAction.escapeMarkdownV2;
+import static com.studyexchange.telegramapiutils.MessagingUtils.NEXT_LINE;
+import static com.studyexchange.telegramapiutils.MessagingUtils.bold;
+import static com.studyexchange.telegramapiutils.MessagingUtils.escapeMarkdownV2;
 
 public class HelpRequest {
     private final long chatId;
@@ -13,6 +13,7 @@ public class HelpRequest {
     private long helpRequestId;
     private String description;
     private List<String> photoFileIds;
+    private boolean active;
 
     public HelpRequest(
         long chatId,
@@ -20,6 +21,7 @@ public class HelpRequest {
     ) {
         this.chatId = chatId;
         this.subject = subject;
+        active = false;
     }
 
     public String helpRequestFormText(
@@ -36,7 +38,7 @@ public class HelpRequest {
             + NEXT_LINE
             + bold("Описание задачи: ")
             + NEXT_LINE
-            + description;
+            + escapeMarkdownV2(description);
     }
 
     public long getChatId() {
@@ -59,6 +61,10 @@ public class HelpRequest {
         return photoFileIds;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
     public void setHelpRequestId(long helpRequestId) {
         this.helpRequestId = helpRequestId;
     }
@@ -69,5 +75,9 @@ public class HelpRequest {
 
     public void setPhotoFileIds(List<String> photoFileIds) {
         this.photoFileIds = photoFileIds;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

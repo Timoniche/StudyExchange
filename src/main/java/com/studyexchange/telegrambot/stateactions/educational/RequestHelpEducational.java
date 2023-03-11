@@ -28,10 +28,11 @@ import static com.studyexchange.core.Subject.PHYSICS;
 import static com.studyexchange.core.Subject.RUSSIAN;
 import static com.studyexchange.core.Subject.SOCIAL;
 import static com.studyexchange.service.UserService.checkUserNotNullOrThrow;
+import static com.studyexchange.telegramapiutils.MessagingUtils.NEXT_LINE;
 
 public class RequestHelpEducational extends BaseStateAction {
     private static final String REQUESTING_HELP_TEXT = ""
-            + "Давай составим нашу первую просьбу о помощи. " + NEXT_LINE
+            + "Теперь давай составим нашу первую просьбу о помощи. " + NEXT_LINE
             + NEXT_LINE
             + "Выбери, какой предмет вызывает у тебя трудности. " + NEXT_LINE
             + NEXT_LINE

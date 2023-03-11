@@ -3,7 +3,6 @@ package com.studyexchange.service;
 import com.studyexchange.core.HelpRequest;
 import com.studyexchange.core.UserState;
 import com.studyexchange.dao.HelpRequestDAO;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 
@@ -18,12 +17,9 @@ public class HelpRequestService {
         helpRequestDAO.putHelpRequest(helpRequest);
     }
 
-    public void updateHelpRequest(
-        @NotNull HelpRequest helpRequest,
-        Consumer<HelpRequest> modification
-    ) {
+    public void updateHelpRequest(HelpRequest helpRequest, Consumer<HelpRequest> modification) {
         modification.accept(helpRequest);
-        putHelpRequest(helpRequest);
+        helpRequestDAO.updateHelpRequest(helpRequest);
     }
 
     public HelpRequest findLastHelpRequestByChatId(long chatId) {

@@ -1,6 +1,7 @@
 package com.studyexchange;
 
 import com.pengrad.telegrambot.TelegramBot;
+import com.studyexchange.core.Matcher;
 import com.studyexchange.dao.inmemory.InMemoryHelpRequestDAO;
 import com.studyexchange.dao.inmemory.InMemoryUserDAO;
 import com.studyexchange.service.HelpRequestService;
@@ -22,7 +23,8 @@ public class Main {
         StateActionFactory stateActionFactory = new StateActionFactory(
             bot,
             userService,
-            helpRequestService
+            helpRequestService,
+            new Matcher()
         );
         UpdateReplier updateReplier = new UpdateReplier(
             userService,

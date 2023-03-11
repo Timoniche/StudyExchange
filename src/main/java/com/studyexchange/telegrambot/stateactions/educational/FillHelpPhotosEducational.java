@@ -21,6 +21,7 @@ import java.util.Optional;
 
 import static com.studyexchange.service.HelpRequestService.checkHelpRequestNotNullOrThrow;
 import static com.studyexchange.service.UserService.checkUserNotNullOrThrow;
+import static com.studyexchange.telegramapiutils.MessagingUtils.NEXT_LINE;
 import static com.studyexchange.telegramapiutils.PhotoUtils.pickBestPhoto;
 
 public class FillHelpPhotosEducational extends BaseStateAction {
@@ -120,6 +121,6 @@ public class FillHelpPhotosEducational extends BaseStateAction {
             );
         }
 
-        return Optional.of(UserState.FILL_TOPICS_CAN_HELP_EDUCATIONAL);
+        return Optional.of(UserState.READY_TO_SEARCH_EDUCATIONAL);
     }
 }

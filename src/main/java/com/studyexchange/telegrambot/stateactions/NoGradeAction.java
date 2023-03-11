@@ -25,6 +25,7 @@ import static com.studyexchange.core.Grade.SIXTH;
 import static com.studyexchange.core.Grade.TENTH;
 import static com.studyexchange.core.Grade.THIRD;
 import static com.studyexchange.service.UserService.checkUserNotNullOrThrow;
+import static com.studyexchange.telegramapiutils.MessagingUtils.NEXT_LINE;
 
 public class NoGradeAction extends BaseStateAction {
     private static String askGradeText(String userName) {
@@ -43,10 +44,10 @@ public class NoGradeAction extends BaseStateAction {
 
     private static final ReplyKeyboardMarkup GRADES_KEYBOARD =
         new ReplyKeyboardMarkup(
-            gradeNames(FIRST, SECOND, THIRD),
-            gradeNames(FOURTH, FIFTH, SIXTH),
-            gradeNames(SEVENTH, EIGHTH, NINTH),
-            gradeNames(TENTH, ELEVENTH, GRADUATED)
+            gradeNames(GRADUATED, ELEVENTH, TENTH),
+            gradeNames(NINTH, EIGHTH, SEVENTH),
+            gradeNames(SIXTH, FIFTH, FOURTH),
+            gradeNames(THIRD, SECOND, FIRST)
         )
             .oneTimeKeyboard(true)
             .resizeKeyboard(true);
@@ -88,6 +89,6 @@ public class NoGradeAction extends BaseStateAction {
             return Optional.empty();
         }
         userService.updateUser(chatId, u -> u.setGrade(grade));
-        return Optional.of(UserState.REQUEST_HELP_EDUCATIONAL);
+        return Optional.of(UserState.FILL_TOPICS_CAN_HELP_EDUCATIONAL);
     }
 }

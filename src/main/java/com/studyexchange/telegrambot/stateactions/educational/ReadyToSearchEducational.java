@@ -13,19 +13,24 @@ import com.studyexchange.telegrambot.stateactions.BaseStateAction;
 import java.util.Optional;
 
 import static com.studyexchange.service.UserService.checkUserNotNullOrThrow;
+import static com.studyexchange.telegramapiutils.MessagingUtils.NEXT_LINE;
 
 public class ReadyToSearchEducational extends BaseStateAction {
     private static final String CONGRATULATIONS_TEXT = ""
-        + "Ура, мы готовы к просмотру просьб других людей:)"
+        + "Мы уже готовы к поиску человека, с кем можно обменяться помощью:)"
         + NEXT_LINE
-        + "Нажми кнопку \"" + Action.START_SEARCHING.getActionText() + "\"";
+        + NEXT_LINE
+        + "Нажми кнопку \"" + Action.JOIN_THE_QUEUE.getActionText() + "\","
+        + " если ты пока не хочешь менять информацию о себе/добавлять новые просьбы о помощи";
 
     private static final String WRONG_ACTION_TEXT = ""
         + "Пожалуйста, выбери действие из списка";
 
     private static final ReplyKeyboardMarkup ACTION_BUTTONS =
         new ReplyKeyboardMarkup(
-            actionNames(Action.START_SEARCHING)
+            actionNames(Action.JOIN_THE_QUEUE),
+            actionNames(Action.ADD_HELP_REQUEST),
+            actionNames(Action.CHANGE_HELP_REQUESTS)
         )
             .oneTimeKeyboard(true)
             .resizeKeyboard(true);
@@ -71,12 +76,15 @@ public class ReadyToSearchEducational extends BaseStateAction {
             return Optional.empty();
         }
         return switch (action) {
-            case START_SEARCHING -> Optional.of(UserState.SEARCHING);
+            case JOIN_THE_QUEUE -> Optional.of(UserState.APPLY_FILTERS_START_SEARCHING);
+            case ADD_HELP_REQUEST, CHANGE_HELP_REQUESTS -> Optional.of(UserState.READY_TO_SEARCH_EDUCATIONAL);
         };
     }
 
     private enum Action {
-        START_SEARCHING("Начать поиск!");
+        JOIN_THE_QUEUE("Начать поиск!"),
+        ADD_HELP_REQUEST("Добавить просьбу о помощи"),
+        CHANGE_HELP_REQUESTS("Изменить существующие просьбы о помощи");
 
         private final String actionText;
 

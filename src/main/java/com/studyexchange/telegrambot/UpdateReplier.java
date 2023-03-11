@@ -18,6 +18,9 @@ public class UpdateReplier {
         + "К сожалению, во время обработки сообщения возникла ошибка. "
         + "Попробуй отправить сообщение еще раз";
 
+    private static final String TOO_FAST_ANSWER = ""
+        + "Ответ пришел почти одновременно с новым вопросом, пожалуйста, введи ответ еще раз:)";
+
     private final UserService userService;
     private final StateActionFactory stateActionFactory;
     private final TelegramBot bot;
@@ -49,6 +52,8 @@ public class UpdateReplier {
             }
 
             if (update.message() != null && user.getLastBotAnswerDate() >= update.message().date()) {
+                bot.execute(new SendMessage(chatId, TOO_FAST_ANSWER));
+
                 log.warn("UpdateId {} is ignored", update.updateId());
                 return;
             }

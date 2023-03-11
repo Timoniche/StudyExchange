@@ -33,6 +33,11 @@ public class InMemoryHelpRequestDAO implements HelpRequestDAO {
         helpRequestById.put(helpRequestId, helpRequest);
     }
 
+    @Override
+    public void updateHelpRequest(HelpRequest helpRequest) {
+        helpRequestById.put(helpRequest.getHelpRequestId(), helpRequest);
+    }
+
     private long generateNextId() {
         return lastHelpRequestId.addAndGet(1);
     }

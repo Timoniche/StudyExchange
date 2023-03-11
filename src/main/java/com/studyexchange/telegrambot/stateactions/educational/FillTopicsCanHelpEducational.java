@@ -18,6 +18,7 @@ import java.util.EnumSet;
 import java.util.Optional;
 
 import static com.studyexchange.service.UserService.checkUserNotNullOrThrow;
+import static com.studyexchange.telegramapiutils.MessagingUtils.NEXT_LINE;
 
 public class FillTopicsCanHelpEducational extends BaseStateAction {
     private static final String TICK = "✅";
@@ -25,7 +26,7 @@ public class FillTopicsCanHelpEducational extends BaseStateAction {
     private static final String COMPLETE_SELECTION = "complete";
 
     private static final String ASK_SUBJECTS_CAN_HELP_WITH = ""
-        + "Теперь давай укажем, с какими предметами ты хотел бы помогать другим людям."
+        + "Давай укажем, с какими предметами ты хотел(а) бы помогать другим людям."
         + NEXT_LINE
         + "Нажми на ⛔, когда завершишь свой выбор (нужно выбрать хотя бы один предмет)";
 
@@ -75,7 +76,7 @@ public class FillTopicsCanHelpEducational extends BaseStateAction {
         }
         long chatId = callback.message().chat().id();
         if (callback.data().equals(COMPLETE_SELECTION)) {
-            return Optional.of(UserState.READY_TO_SEARCH_EDUCATIONAL);
+            return Optional.of(UserState.REQUEST_HELP_EDUCATIONAL);
         }
         Subject selectedSubject = Subject.fromName(callback.data());
 

@@ -11,6 +11,7 @@ import com.studyexchange.service.UserService;
 import java.util.Optional;
 
 import static com.studyexchange.service.UserService.checkUserNotNullOrThrow;
+import static com.studyexchange.telegramapiutils.MessagingUtils.NEXT_LINE;
 
 public class NoNameIntroAction extends BaseStateAction {
     private static final String GREETINGS_TEXT = ""

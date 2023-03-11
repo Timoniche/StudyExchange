@@ -7,4 +7,6 @@ public interface HelpRequestDAO {
     HelpRequest findLastHelpRequestByChatId(long chatId);
 
     void putHelpRequest(HelpRequest helpRequest);
+
+    void updateHelpRequest(HelpRequest helpRequest);
 }
