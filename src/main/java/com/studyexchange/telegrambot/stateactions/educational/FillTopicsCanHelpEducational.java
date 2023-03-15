@@ -58,8 +58,8 @@ public class FillTopicsCanHelpEducational extends BaseStateAction {
     @Override
     public int setupStateAndAskQuestions(long chatId) {
         User user = userService.findUserByChatId(chatId);
-        checkUserNotNullOrThrow(user, UserState.FILL_TOPICS_CAN_HELP_EDUCATIONAL);
-        userService.updateUser(user, u -> u.setUserState(UserState.FILL_TOPICS_CAN_HELP_EDUCATIONAL));
+        checkUserNotNullOrThrow(user, UserState.REQUEST_SUBJECTS_CAN_HELP_WITH_EDUCATIONAL);
+        userService.updateUser(user, u -> u.setUserState(UserState.REQUEST_SUBJECTS_CAN_HELP_WITH_EDUCATIONAL));
 
         SendResponse questionMessage = bot.execute(
             new SendMessage(chatId, ASK_SUBJECTS_CAN_HELP_WITH)
@@ -85,7 +85,7 @@ public class FillTopicsCanHelpEducational extends BaseStateAction {
         }
 
         User user = userService.findUserByChatId(chatId);
-        checkUserNotNullOrThrow(user, UserState.FILL_TOPICS_CAN_HELP_EDUCATIONAL);
+        checkUserNotNullOrThrow(user, UserState.REQUEST_SUBJECTS_CAN_HELP_WITH_EDUCATIONAL);
 
         user.changeSubjectPresence(selectedSubject);
 

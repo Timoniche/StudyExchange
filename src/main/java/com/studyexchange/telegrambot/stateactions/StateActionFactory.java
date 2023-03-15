@@ -44,8 +44,8 @@ public class StateActionFactory {
         Matcher matcher
     ) {
         return switch (userState) {
-            case NO_NAME_INTRO -> new NoNameIntroAction(bot, userService);
-            case NO_GRADE -> new NoGradeAction(bot, userService);
+            case REQUEST_NAME -> new NoNameIntroAction(bot, userService);
+            case REQUEST_GRADE -> new NoGradeAction(bot, userService);
             case REQUEST_HELP_EDUCATIONAL -> new RequestHelpEducational(
                 bot,
                 userService,
@@ -61,7 +61,7 @@ public class StateActionFactory {
                 userService,
                 helpRequestService
             );
-            case FILL_TOPICS_CAN_HELP_EDUCATIONAL -> new FillTopicsCanHelpEducational(bot, userService);
+            case REQUEST_SUBJECTS_CAN_HELP_WITH_EDUCATIONAL -> new FillTopicsCanHelpEducational(bot, userService);
             case READY_TO_SEARCH_EDUCATIONAL -> new ReadyToSearchEducational(bot, userService);
             case APPLY_FILTERS_START_SEARCHING -> new ApplyFiltersStartSearchingAction(
                 bot,

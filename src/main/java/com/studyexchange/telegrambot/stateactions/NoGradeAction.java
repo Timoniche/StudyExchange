@@ -63,8 +63,8 @@ public class NoGradeAction extends BaseStateAction {
     @Override
     public int setupStateAndAskQuestions(long chatId) {
         User user = userService.findUserByChatId(chatId);
-        checkUserNotNullOrThrow(user, UserState.NO_GRADE);
-        userService.updateUser(user, u -> u.setUserState(UserState.NO_GRADE));
+        checkUserNotNullOrThrow(user, UserState.REQUEST_GRADE);
+        userService.updateUser(user, u -> u.setUserState(UserState.REQUEST_GRADE));
 
         SendResponse questionMessage = bot.execute(
             new SendMessage(chatId, askGradeText(user.getName()))
@@ -89,6 +89,6 @@ public class NoGradeAction extends BaseStateAction {
             return Optional.empty();
         }
         userService.updateUser(chatId, u -> u.setGrade(grade));
-        return Optional.of(UserState.FILL_TOPICS_CAN_HELP_EDUCATIONAL);
+        return Optional.of(UserState.REQUEST_SUBJECTS_CAN_HELP_WITH_EDUCATIONAL);
     }
 }

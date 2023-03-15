@@ -33,9 +33,9 @@ public class NoNameIntroAction extends BaseStateAction {
     public int setupStateAndAskQuestions(long chatId) {
         User user = userService.findUserByChatId(chatId);
         if (user == null) {
-            userService.putUser(User.newUser(chatId, UserState.NO_NAME_INTRO));
+            userService.putUser(User.newUser(chatId, UserState.REQUEST_NAME));
         } else {
-            userService.updateUser(user, u -> u.setUserState(UserState.NO_NAME_INTRO));
+            userService.updateUser(user, u -> u.setUserState(UserState.REQUEST_NAME));
         }
 
         SendResponse questionMessage = bot.execute(new SendMessage(chatId, GREETINGS_TEXT));
@@ -54,9 +54,9 @@ public class NoNameIntroAction extends BaseStateAction {
             return Optional.empty();
         }
         User user = userService.findUserByChatId(chatId);
-        checkUserNotNullOrThrow(user, UserState.NO_NAME_INTRO);
+        checkUserNotNullOrThrow(user, UserState.REQUEST_NAME);
         userService.updateUser(user, u -> u.setName(newName));
 
-        return Optional.of(UserState.NO_GRADE);
+        return Optional.of(UserState.REQUEST_GRADE);
     }
 }

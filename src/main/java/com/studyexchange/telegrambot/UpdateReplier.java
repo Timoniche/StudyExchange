@@ -45,7 +45,7 @@ public class UpdateReplier {
         try {
             User user = userService.findUserByChatId(chatId);
             if (user == null) {
-                int botReplyDate = stateActionFactory.stateActionFrom(UserState.NO_NAME_INTRO)
+                int botReplyDate = stateActionFactory.stateActionFrom(UserState.REQUEST_NAME)
                     .setupStateAndAskQuestions(chatId);
                 userService.updateUser(chatId, u -> u.setLastBotAnswerDate(botReplyDate));
                 return;
